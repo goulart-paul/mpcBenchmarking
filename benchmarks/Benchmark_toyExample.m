@@ -1,4 +1,4 @@
-function [ problem ] = Benchmark_toyExample1( variant )
+function [ problem ] = Benchmark_toyExample( variant )
 %Benchmark_toyExample1 does something.
 %
 %Inputs:
@@ -14,7 +14,11 @@ function [ problem ] = Benchmark_toyExample1( variant )
 %
 % Authors:         Joachim Ferreau, Helfried Peyrl, 
 %                  Dimitris Kouzoupis, Andrea Zanelli
-% Last modified:   14/7/2015
+% Source date  :   14/7/2015
+%
+% Modifications: 
+%
+% 25/07/23 (P. Goulart) : Fix benchmark name bug
 
 
 % default variant
@@ -30,8 +34,8 @@ problem = Benchmark(variant);
 problem = problem.loadFromMatFile( 'toyExample1',variant );
 
 problem.info              = setupBenchmarkInfoStruct( );
-problem.info.ID           = uint32(Benchmarks.toyExample1);
-problem.info.name         = 'toyExample1';
+problem.info.ID           = uint32(Benchmarks.toyExample);
+problem.info.name         = 'toyExample';
 problem.info.description  = 'A simple toy example.';
 problem.info.reference    = 'Problem Set 6 - Numerical Optimization Methods, Model Predictive Control course at ETH Zurich in 2013';
 problem.info.origin       = Origin.academicExample;

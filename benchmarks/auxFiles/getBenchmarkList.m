@@ -14,7 +14,12 @@ function [ benchmarkNames,benchmarkVariants,benchmarkFeatures ] = getBenchmarkLi
 %
 % Authors:         Joachim Ferreau, Helfried Peyrl, 
 %                  Dimitris Kouzoupis, Andrea Zanelli
-% Last modified:   27/11/2015
+% Source date  :   14/7/2015
+%
+% Modifications: 
+%
+% 25/07/23 (P. Goulart) : Fixed bug in warning suspension/restoration and added 
+%                         filter for failed benchmark imports
 
 
     nBenchmarks = getNumBenchmarks( );
@@ -24,7 +29,8 @@ function [ benchmarkNames,benchmarkVariants,benchmarkFeatures ] = getBenchmarkLi
     benchmarkFeatures = cell( nBenchmarks,1 );
 
     
-    curWarningState = adjustWarnLevel( WarnLevel.showNone );
+    curWarningState = warning();
+    warning off
     
     for ii=1:nBenchmarks
 
@@ -50,7 +56,7 @@ function [ benchmarkNames,benchmarkVariants,benchmarkFeatures ] = getBenchmarkLi
                 
             end
 
-        catch %err
+        catch 
         end
 
     end
@@ -59,5 +65,11 @@ function [ benchmarkNames,benchmarkVariants,benchmarkFeatures ] = getBenchmarkLi
     
     % restore warning state
     warning( curWarningState );
+
+    %remove failures
+    idx = ~cellfun(@isempty,benchmarkNames)
+    benchmarkNames = benchmarkNames(idx)
+    benchmarkVariants = benchmarkVariants(idx)
+    benchmarkFeatures = benchmarkFeatures(idx)
 
 end

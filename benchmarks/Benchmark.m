@@ -11,7 +11,11 @@ classdef Benchmark < BenchmarkData
 %
 % Authors:         Joachim Ferreau, Helfried Peyrl, 
 %                  Dimitris Kouzoupis, Andrea Zanelli
-% Last modified:   14/7/2015
+% Source date  :   14/7/2015
+%
+% Modifications: 
+%
+% 25/07/23 (P. Goulart) : modified target directory for .mat outputs 
 
     
     properties  
@@ -974,12 +978,12 @@ classdef Benchmark < BenchmarkData
         end
 
         
-        function [ ] = exportToMatFile( obj,variant )
+        function [ ] = exportToMatFile( obj, variant )
 
             if ( nargin < 2 )
                 variant = obj.curVariant;
             end
-            
+           
             if ( obj.isinit )
                 error( 'Unable to export benchmark that has been already initialized!' );
             end
@@ -988,9 +992,12 @@ classdef Benchmark < BenchmarkData
                 error( ['Unable to export variant no. ',num2str(variant),'!'] );
             end
             
-            caesarPath = getCaesarPath( );
+            [filepath,~,~] = fileparts(mfilename('fullpath'));
+            targetpath = "../../targets";
             eval( ['problem = Benchmark_',char(obj.getName()),'( variant );'] );
-            eval( ['save ',caesarPath,'benchmarks',sep,'matFiles',sep,obj.getLabel(variant),'.mat problem;'] );
+            target = fullfile(filepath,targetpath,strcat(obj.getLabel(variant),'.mat'))
+            data = struct(problem);
+            save(target, 'data');
 
         end
 
